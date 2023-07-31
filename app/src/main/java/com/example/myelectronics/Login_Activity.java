@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+
 public class Login_Activity extends AppCompatActivity {
 
     EditText email;
@@ -31,6 +33,7 @@ public class Login_Activity extends AppCompatActivity {
         loginBtn = (Button) findViewById(R.id.LoginButton);
         registrationBtn = (TextView) findViewById(R.id.LoginRegistrationTextButton);
         UserDao db = new UserDBManagment(this).getUserDbInstance();
+        List<OrmUser> users = db.GetAllUsers();
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,8 +48,8 @@ public class Login_Activity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-//                                        Intent Home = new Intent(Login_Activity.this, Registration_Activity.class);
-////                         startActivity(Home);
+                                        Intent home = new Intent(Login_Activity.this, HomeActivity.class);
+                                        startActivity(home);
                                         Toast.makeText(Login_Activity.this, "Login Succeed", Toast.LENGTH_SHORT).show();
                                         Log.d("Login Process", "Login Successfully");
                                     }

@@ -24,6 +24,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         return true;
     }
 
+//    void AddProducts() {
+//        ProductDao db = new ProductDBManagement(this).getProductDbInstance();
+//        db.AddProduct(new OrmProduct(null,));
+//    }
+
     private void startUp() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -32,6 +37,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 // Do something after 5s = 5000ms
                 Intent loginIntent = new Intent(SplashScreenActivity.this, Login_Activity.class);
                 startActivity(loginIntent);
+
             }
         }, 2000);
     }

@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class UserDBManagment {
 
-    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+    static final Migration MIGRATION = new Migration(2, 3) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
         }
@@ -23,7 +23,7 @@ public class UserDBManagment {
     UserDao getUserDbInstance() {
         ORMDatabase db = Room
                 .databaseBuilder(context, ORMDatabase.class, "orm-database")
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION)
                 .build();
 
         UserDao dao = db.UserDao();
