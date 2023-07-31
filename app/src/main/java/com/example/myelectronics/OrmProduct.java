@@ -14,7 +14,7 @@ public class OrmProduct {
     private String category;
     private int image;
 
-    public OrmProduct(int productId, String productName, String productDescription, double productPrice, String category, int image) {
+    public OrmProduct(String productName, String productDescription, double productPrice, String category, int image) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;

@@ -17,6 +17,6 @@ public interface ProductDao {
     @Query("SELECT * FROM products WHERE  productId =:id")
     OrmProduct GetProductById(int id);
 
-    @Query("UPDATE products SET productName =:name, productDescription =:desc , productPrice =:price")
-    int UpdateUserInfo(String name, String desc, double price);
+    @Query("UPDATE products SET productName =:name, productDescription =:desc , category =:category,image =:image, productPrice =:price WHERE productId =:id")
+    int UpdateProductInfo(int id, String name, String desc, double price, String category, int image);
 }

@@ -38,8 +38,8 @@ public class SubProductAdapter extends RecyclerView.Adapter<SubProductAdapter.Vi
     public void onBindViewHolder(@NonNull SubProductAdapter.ViewHolder holder, int position) {
         holder.productImage.setImageResource(data.get(position).getImage());
         holder.productName.setText(data.get(position).getProductName());
-        holder.productPrice.setText(String.valueOf(data.get(position).getProductPrice()));
-        holder.productDescription.setText(data.get(position).getProductDescription() + " OMR");
+        holder.productPrice.setText(String.valueOf(data.get(position).getProductPrice()) + " OMR");
+        holder.productDescription.setText(data.get(position).getProductDescription());
     }
 
     @Override

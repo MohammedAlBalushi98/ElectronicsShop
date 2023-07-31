@@ -19,6 +19,7 @@ public class Login_Activity extends AppCompatActivity {
     EditText password;
     Button loginBtn;
     TextView registrationBtn;
+    private ORMDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,22 +28,22 @@ public class Login_Activity extends AppCompatActivity {
         setup();
     }
 
+
+
     private void setup() {
         email = (EditText) findViewById(R.id.LoginEmailEditText);
         password = (EditText) findViewById(R.id.LoginPasswordEditText);
         loginBtn = (Button) findViewById(R.id.LoginButton);
         registrationBtn = (TextView) findViewById(R.id.LoginRegistrationTextButton);
-        UserDao db = new UserDBManagment(this).getUserDbInstance();
-        List<OrmUser> users = db.GetAllUsers();
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                db = ((MyApp) getApplication()).getORMDatabase();
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        OrmUser user = db.GetUserById(email.getText().toString().toLowerCase());
+                        OrmUser user = db.UserDao().GetUserById(email.getText().toString().toLowerCase());
                         if (user != null) {
                             if (user.getPassword().equals(password.getText().toString())) {
                                 runOnUiThread(new Runnable() {
