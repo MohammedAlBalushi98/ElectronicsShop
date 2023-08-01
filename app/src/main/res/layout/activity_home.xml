@@ -24,11 +24,11 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
+            <ImageButton
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_weight="0"
-                app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+                app:srcCompat="@drawable/baseline_reorder_24" />
 
             <EditText
                 android:layout_width="fill_parent"
@@ -38,11 +38,11 @@
                 android:hint="Search.."
                 android:paddingLeft="10dp" />
 
-            <ImageView
+            <ImageButton
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_weight="0"
-                app:srcCompat="@android:drawable/ic_menu_search" />
+                app:srcCompat="@drawable/baseline_search_24" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -59,7 +59,7 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bottom_bar_menu"
         android:layout_alignParentBottom="true"
-        android:layout_weight="0" />
+        android:layout_weight="0"
+        app:menu="@menu/bottom_bar_menu" />
 </LinearLayout>

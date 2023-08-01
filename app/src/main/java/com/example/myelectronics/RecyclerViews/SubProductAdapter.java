@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myelectronics.OrmProduct;
 import com.example.myelectronics.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
@@ -20,6 +23,7 @@ public class SubProductAdapter extends RecyclerView.Adapter<SubProductAdapter.Vi
     Context context;
     List<OrmProduct> data;
     String categoryTitle;
+    int counter = 0;
 
     public SubProductAdapter(Context context, List<OrmProduct> data, String categoryTitle) {
         this.context = context;
@@ -40,6 +44,47 @@ public class SubProductAdapter extends RecyclerView.Adapter<SubProductAdapter.Vi
         holder.productName.setText(data.get(position).getProductName());
         holder.productPrice.setText(String.valueOf(data.get(position).getProductPrice()) + " OMR");
         holder.productDescription.setText(data.get(position).getProductDescription());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Example of how to show the bottom sheet
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+                bottomSheetDialog.setContentView(R.layout.bottom_sheet_layout);
+                ImageView productImg = bottomSheetDialog.findViewById(R.id.DetailsProductImage);
+                TextView productTitle = bottomSheetDialog.findViewById(R.id.DetailsProductTitle);
+                TextView productDesc = bottomSheetDialog.findViewById(R.id.DetailsProductDescription);
+                TextView productPrice = bottomSheetDialog.findViewById(R.id.DetailsProductPrice);
+                EditText quantity = bottomSheetDialog.findViewById(R.id.QuantityEditText);
+                productImg.setImageResource(data.get(position).getImage());
+                productTitle.setText(data.get(position).getProductName());
+                productDesc.setText(data.get(position).getProductDescription());
+                productPrice.setText(String.valueOf(data.get(position).getProductPrice()) + " OMR");
+                quantity.setText("0");
+
+
+                Button plusBtn = bottomSheetDialog.findViewById(R.id.PlusBtn);
+                Button minusBtn = bottomSheetDialog.findViewById(R.id.MinusBtn);
+
+                plusBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        counter++;
+                        quantity.setText(String.valueOf(counter));
+                    }
+                });
+
+                minusBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (counter != 0) {
+                            counter--;
+                            quantity.setText(String.valueOf(counter));
+                        }
+                    }
+                });
+                bottomSheetDialog.show();
+            }
+        });
     }
 
     @Override

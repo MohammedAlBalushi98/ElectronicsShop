@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Home"
         android:id="@+id/HomeBottomBar"
-        android:icon="@drawable/baseline_home_24"/>
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home" />
     <item
-        android:title="Basket"
         android:id="@+id/BasketBottomBar"
-        android:icon="@drawable/baseline_shopping_basket_24"/>
+        android:icon="@drawable/baseline_shopping_basket_24"
+        android:title="Basket" />
     <item
-        android:title="Settings"
+        android:id="@+id/OrdersBottomBar"
+        android:icon="@drawable/baseline_playlist_add_check_circle_24"
+        android:title="Orders" />
+    <item
         android:id="@+id/SettingsBottomBar"
-        android:icon="@drawable/baseline_settings_24"/>
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Settings" />
 </menu>
