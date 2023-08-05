@@ -1,6 +1,8 @@
 package com.example.myelectronics;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -12,16 +14,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        if (checkUserLoggedIn()) {
-            startUp();
-        }
-
-
+        startUp();
     }
 
     boolean checkUserLoggedIn() {
-        //TODO: Check if user logged in (Shared preferences)
-        return true;
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("LoggedIn", false);
     }
 
 //    void AddProducts() {
@@ -35,8 +33,14 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Do something after 5s = 5000ms
-                Intent loginIntent = new Intent(SplashScreenActivity.this, Login_Activity.class);
-                startActivity(loginIntent);
+                boolean res = checkUserLoggedIn();
+                if (!res) {
+                    Intent loginIntent = new Intent(SplashScreenActivity.this, Login_Activity.class);
+                    startActivity(loginIntent);
+                } else {
+                    Intent homeIntent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                    startActivity(homeIntent);
+                }
 
             }
         }, 2000);
