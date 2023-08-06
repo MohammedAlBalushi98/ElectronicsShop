@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myelectronics.MyApp;
-import com.example.myelectronics.ORMDatabase;
-import com.example.myelectronics.OrmProduct;
 import com.example.myelectronics.R;
 import com.example.myelectronics.RecyclerViews.ProductAdapter;
+import com.example.myelectronics.database.ORMDatabase;
+import com.example.myelectronics.database.OrmProduct;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;

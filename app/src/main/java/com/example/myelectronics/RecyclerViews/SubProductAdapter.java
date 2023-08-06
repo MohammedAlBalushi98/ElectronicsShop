@@ -12,8 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myelectronics.OrmProduct;
 import com.example.myelectronics.R;
+import com.example.myelectronics.database.OrmProduct;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;

@@ -1,18 +1,10 @@
-package com.example.myelectronics;
+package com.example.myelectronics.database;
 
 import android.content.Context;
 
 import androidx.room.Room;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class UserDBManagment {
-
-//    static final Migration MIGRATION = new Migration(2, 3) {
-//        @Override
-//        public void migrate(SupportSQLiteDatabase database) {
-//        }
-//    };
     Context context;
 
 

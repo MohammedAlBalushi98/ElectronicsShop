@@ -9,6 +9,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myelectronics.database.ORMDatabase;
+import com.example.myelectronics.database.OrmProduct;
+import com.example.myelectronics.database.OrmUser;
+
 public class Registration_Activity extends AppCompatActivity {
     EditText fName, lName, email, password, rePassword;
     Button cancelBtn, registerBtn;

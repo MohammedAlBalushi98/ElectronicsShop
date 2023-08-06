@@ -1,7 +1,10 @@
 package com.example.myelectronics;
 
 import android.app.Application;
+
 import androidx.room.Room;
+
+import com.example.myelectronics.database.ORMDatabase;
 
 public class MyApp extends Application {
     private ORMDatabase ormDatabase;

@@ -1,4 +1,4 @@
-package com.example.myelectronics;
+package com.example.myelectronics.database;
 
 import android.content.Context;
 
@@ -6,12 +6,10 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {OrmUser.class, OrmProduct.class}, version = 1, exportSchema = false)
+@Database(entities = {OrmUser.class, OrmProduct.class, OrmBasket.class, OrmOrder.class}, version = 1, exportSchema = false)
 public abstract class ORMDatabase extends RoomDatabase {
     private static ORMDatabase instance;
-    public abstract ProductDao ProductDao();
 
-    public abstract UserDao UserDao();
     public static synchronized ORMDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
@@ -21,5 +19,14 @@ public abstract class ORMDatabase extends RoomDatabase {
         }
         return instance;
     }
+
+    public abstract ProductDao ProductDao();
+
+    public abstract UserDao UserDao();
+
+    public abstract BasketDao BasketDao();
+
+    public abstract OrderDao OrderDao();
+
 
 }

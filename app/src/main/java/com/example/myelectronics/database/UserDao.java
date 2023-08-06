@@ -1,4 +1,4 @@
-package com.example.myelectronics;
+package com.example.myelectronics.database;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -17,7 +17,7 @@ public interface UserDao {
     @Query("SELECT * FROM users WHERE email =:email")
     OrmUser GetUserById(String email);
 
-    @Query("UPDATE users SET email = :email, password = :password ,firstName = :firstName, lastName = :lastName, balance = :balance")
-    int UpdateUserInfo(String email, String password, String firstName, String lastName, double balance);
+    @Query("UPDATE users SET email = :email, password = :password ,firstName = :firstName, lastName = :lastName, balance = :balance WHERE id =:id")
+    int UpdateUserInfo(int id, String email, String password, String firstName, String lastName, double balance);
 
 }

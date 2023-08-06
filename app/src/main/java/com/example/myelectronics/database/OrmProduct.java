@@ -1,4 +1,4 @@
-package com.example.myelectronics;
+package com.example.myelectronics.database;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

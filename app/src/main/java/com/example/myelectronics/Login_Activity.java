@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myelectronics.database.ORMDatabase;
+import com.example.myelectronics.database.OrmUser;
+
 public class Login_Activity extends AppCompatActivity {
 
     EditText email;

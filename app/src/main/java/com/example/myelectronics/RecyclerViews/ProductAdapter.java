@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myelectronics.OrmProduct;
 import com.example.myelectronics.R;
+import com.example.myelectronics.database.OrmProduct;
 
 import java.util.List;
 import java.util.stream.Collectors;

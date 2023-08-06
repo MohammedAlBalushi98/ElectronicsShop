@@ -1,14 +1,20 @@
 package com.example.myelectronics.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.myelectronics.R;
+import com.example.myelectronics.RecyclerViews.SettingsAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,10 +27,13 @@ public class SettingsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    Context context;
+    View rootView;
+    List<String> Titles = new ArrayList<>();
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ViewGroup viewGroup;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -60,7 +69,20 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+        context = rootView.getContext();
+        viewGroup = container;
+        setup();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return rootView;
+    }
+
+    private void setup() {
+        Titles.add("Change Language");
+        Titles.add("Change Theme");
+        RecyclerView settingsRecyclerView = (RecyclerView) rootView.findViewById(R.id.SettingsRecyclerView);
+        SettingsAdapter settingsAdapter = new SettingsAdapter(Titles);
+        settingsRecyclerView.setAdapter(settingsAdapter);
+        settingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 }
