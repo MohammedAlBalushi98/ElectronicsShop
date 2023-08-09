@@ -10,9 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myelectronics.MyApp;
 import com.example.myelectronics.R;
+import com.example.myelectronics.database.ORMDatabase;
+import com.example.myelectronics.database.OrmBasket;
 import com.example.myelectronics.database.OrmProduct;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -22,19 +26,28 @@ public class SubProductAdapter extends RecyclerView.Adapter<SubProductAdapter.Vi
 
     Context context;
     List<OrmProduct> data;
-    String categoryTitle;
-    int counter = 0;
+    int counter = 1;
+    FragmentActivity fragmentActivity;
+    int type;
+    private int userID;
+    private ORMDatabase db;
 
-    public SubProductAdapter(Context context, List<OrmProduct> data, String categoryTitle) {
+    public SubProductAdapter(Context context, List<OrmProduct> data, FragmentActivity fragmentActivity, int userID, int type) {
         this.context = context;
         this.data = data;
-        this.categoryTitle = categoryTitle;
+        this.fragmentActivity = fragmentActivity;
+        this.userID = userID;
+        this.type = type;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sub_product_list_item, parent, false);
+        View view;
+        if (type == 1) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_filter_items, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sub_product_list_item, parent, false);
+        }
         return new ViewHolder(view);
     }
 
@@ -59,11 +72,13 @@ public class SubProductAdapter extends RecyclerView.Adapter<SubProductAdapter.Vi
                 productTitle.setText(data.get(position).getProductName());
                 productDesc.setText(data.get(position).getProductDescription());
                 productPrice.setText(String.valueOf(data.get(position).getProductPrice()) + " OMR");
-                quantity.setText("0");
+                quantity.setText("1");
+                db = ((MyApp) fragmentActivity.getApplication()).getORMDatabase();
 
 
                 Button plusBtn = bottomSheetDialog.findViewById(R.id.PlusBtn);
                 Button minusBtn = bottomSheetDialog.findViewById(R.id.MinusBtn);
+                Button purchaseBtn = bottomSheetDialog.findViewById(R.id.PurchaseBtn);
 
                 plusBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -76,12 +91,27 @@ public class SubProductAdapter extends RecyclerView.Adapter<SubProductAdapter.Vi
                 minusBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (counter != 0) {
+                        if (counter != 1) {
                             counter--;
                             quantity.setText(String.valueOf(counter));
                         }
                     }
                 });
+
+                purchaseBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                db.BasketDao().AddBasket(new OrmBasket(data.get(position).getProductId(), counter, (data.get(position).getProductPrice() * counter), userID));
+                                bottomSheetDialog.dismiss();
+                            }
+                        });
+                        thread.start();
+                    }
+                });
+
                 bottomSheetDialog.show();
             }
         });
@@ -90,6 +120,11 @@ public class SubProductAdapter extends RecyclerView.Adapter<SubProductAdapter.Vi
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void updateData(List<OrmProduct> newData) {
+        data = newData;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -106,6 +141,5 @@ public class SubProductAdapter extends RecyclerView.Adapter<SubProductAdapter.Vi
             productDescription = itemView.findViewById(R.id.ProductDesc);
         }
     }
-
 
 }

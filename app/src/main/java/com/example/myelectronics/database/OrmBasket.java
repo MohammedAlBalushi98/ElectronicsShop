@@ -7,12 +7,13 @@ import androidx.room.PrimaryKey;
 public class OrmBasket {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    private int basketId;
     private int productId;
     private int quantity;
     private double total_price;
 
-    public OrmBasket(int id, int productId, int quantity, double total_price) {
-        this.id = id;
+    public OrmBasket(int productId, int quantity, double total_price, int basketId) {
+        this.basketId = basketId;
         this.productId = productId;
         this.quantity = quantity;
         this.total_price = total_price;
@@ -24,6 +25,14 @@ public class OrmBasket {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getBasketId() {
+        return basketId;
+    }
+
+    public void setBasketId(int basketId) {
+        basketId = basketId;
     }
 
     public int getProductId() {

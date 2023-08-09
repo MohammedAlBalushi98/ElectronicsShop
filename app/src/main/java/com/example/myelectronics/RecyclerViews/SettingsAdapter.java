@@ -1,5 +1,9 @@
 package com.example.myelectronics.RecyclerViews;
 
+import static android.content.Context.MODE_PRIVATE;
+import static androidx.core.app.ActivityCompat.recreate;
+
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myelectronics.R;
@@ -15,10 +21,14 @@ import java.util.List;
 
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHolder> {
 
+    private static final String THEME_PREFERENCES = "themePrefs";
+    private static final String THEME_KEY = "currentTheme";
+    FragmentActivity fragmentActivity;
     List<String> settingsTitles;
 
-    public SettingsAdapter(List<String> settingsTitles) {
+    public SettingsAdapter(List<String> settingsTitles, FragmentActivity fragmentActivity) {
         this.settingsTitles = settingsTitles;
+        this.fragmentActivity = fragmentActivity;
     }
 
 
@@ -46,6 +56,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
                     @Override
                     public void onClick(View view) {
                         Log.d("Settings", "Change Theme");
+                        toggleTheme();
                     }
                 });
                 break;
@@ -66,6 +77,22 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
         return settingsTitles.size();
     }
 
+    private void toggleTheme() {
+        SharedPreferences sharedPreferences = fragmentActivity.getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE);
+        int currentTheme = sharedPreferences.getInt(THEME_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+
+        if (currentTheme == AppCompatDelegate.MODE_NIGHT_YES) {
+            currentTheme = AppCompatDelegate.MODE_NIGHT_NO; // Light mode
+        } else {
+            currentTheme = AppCompatDelegate.MODE_NIGHT_YES; // Dark mode
+        }
+
+        AppCompatDelegate.setDefaultNightMode(currentTheme);
+        sharedPreferences.edit().putInt(THEME_KEY, currentTheme).apply();
+
+        recreate(fragmentActivity); // Apply the new theme without restarting the activity
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         Button settingsBtn;
 
@@ -74,4 +101,5 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
             settingsBtn = itemView.findViewById(R.id.settingsTitleTextButton);
         }
     }
+
 }

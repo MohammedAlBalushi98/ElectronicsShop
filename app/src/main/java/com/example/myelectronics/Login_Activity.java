@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myelectronics.database.ORMDatabase;
 import com.example.myelectronics.database.OrmUser;
+import com.google.gson.Gson;
 
 public class Login_Activity extends AppCompatActivity {
 
@@ -57,6 +58,10 @@ public class Login_Activity extends AppCompatActivity {
                                     editor.putBoolean("LoggedIn", true);
                                     editor.apply();
                                 }
+                                Gson gson = new Gson();
+                                String userData = gson.toJson(user);
+                                editor.putString("UserData", userData);
+                                editor.apply();
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

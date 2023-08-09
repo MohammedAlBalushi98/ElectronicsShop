@@ -14,7 +14,7 @@ public interface ProductDao {
     @Query("SELECT * FROM products")
     List<OrmProduct> GetAllProducts();
 
-    @Query("SELECT * FROM products WHERE  productId =:id")
+    @Query("SELECT * FROM products WHERE productId =:id")
     OrmProduct GetProductById(int id);
 
     @Query("UPDATE products SET productName =:name, productDescription =:desc , category =:category,image =:image, productPrice =:price WHERE productId =:id")

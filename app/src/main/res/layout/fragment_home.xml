@@ -43,18 +43,13 @@
                         app:srcCompat="@drawable/baseline_reorder_24" />
 
                     <EditText
+                        android:id="@+id/HomeSearch"
                         android:layout_width="fill_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:hint="Search.."
                         android:paddingLeft="10dp" />
-
-                    <ImageButton
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="0"
-                        app:srcCompat="@drawable/baseline_search_24" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

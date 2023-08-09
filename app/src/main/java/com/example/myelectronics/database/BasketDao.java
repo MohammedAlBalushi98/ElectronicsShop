@@ -1,6 +1,7 @@
 package com.example.myelectronics.database;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
@@ -14,9 +15,12 @@ public interface BasketDao {
     @Query("SELECT * FROM baskets")
     List<OrmBasket> GetBasket();
 
-    @Query("SELECT * FROM baskets WHERE  id =:id")
-    OrmBasket GetBasketById(int id);
+    @Query("SELECT * FROM baskets WHERE basketId =:id")
+    List<OrmBasket> GetBasketById(int id);
 
-    @Query("UPDATE baskets SET productId =:productID, quantity =:quantity, total_price =:totalPrice WHERE id =:id")
-    int UpdateBasketInfo(int id, int productID, int quantity, double totalPrice);
+    @Query("UPDATE baskets SET productId =:productID, quantity =:quantity, total_price =:totalPrice, basketId =:basketId WHERE id =:id")
+    int UpdateBasketInfo(int id, int productID, int quantity, double totalPrice, int basketId);
+
+    @Delete
+    int RemoveBasket(OrmBasket basket);
 }

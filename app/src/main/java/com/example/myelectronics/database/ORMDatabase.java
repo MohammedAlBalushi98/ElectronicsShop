@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {OrmUser.class, OrmProduct.class, OrmBasket.class, OrmOrder.class}, version = 1, exportSchema = false)
+@Database(entities = {OrmUser.class, OrmProduct.class, OrmBasket.class, OrmOrder.class}, version = 2, exportSchema = false)
 public abstract class ORMDatabase extends RoomDatabase {
     private static ORMDatabase instance;
 

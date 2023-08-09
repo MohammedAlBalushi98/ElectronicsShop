@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,13 +20,17 @@ import java.util.stream.Collectors;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     Context context;
+    FragmentActivity fragmentActivity;
     private List<String> categoriesTitles;
     private List<OrmProduct> productData;
+    private int userID;
 
-    public ProductAdapter(Context context, List<String> categoriesTitles, List<OrmProduct> productData) {
+    public ProductAdapter(Context context, List<String> categoriesTitles, List<OrmProduct> productData, FragmentActivity fragmentActivity, int userID) {
         this.context = context;
         this.categoriesTitles = categoriesTitles;
         this.productData = productData;
+        this.fragmentActivity = fragmentActivity;
+        this.userID = userID;
     }
 
     @Override
@@ -41,7 +46,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         filteredArray = productData.stream()
                 .filter(product -> product.getCategory().toLowerCase().contains(categoriesTitles.get(position).toLowerCase()))
                 .collect(Collectors.toList());
-        SubProductAdapter subProductAdapter = new SubProductAdapter(context, filteredArray, categoriesTitles.get(position));
+        SubProductAdapter subProductAdapter = new SubProductAdapter(context, filteredArray, fragmentActivity, userID, 0);
         holder.subRecyclerView.setAdapter(subProductAdapter);
         holder.category.setText(categoriesTitles.get(position).toUpperCase());
     }

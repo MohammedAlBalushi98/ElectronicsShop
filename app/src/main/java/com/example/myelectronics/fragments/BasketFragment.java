@@ -1,14 +1,28 @@
 package com.example.myelectronics.fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myelectronics.MyApp;
 import com.example.myelectronics.R;
+import com.example.myelectronics.RecyclerViews.BasketAdapter;
+import com.example.myelectronics.database.ORMDatabase;
+import com.example.myelectronics.database.OrmBasket;
+import com.example.myelectronics.database.OrmUser;
+import com.google.android.material.card.MaterialCardView;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +39,11 @@ public class BasketFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private View rootView;
+    private ORMDatabase db;
+    private List<OrmBasket> basketsList;
+    private double total = 0;
 
     public BasketFragment() {
         // Required empty public constructor
@@ -60,7 +79,44 @@ public class BasketFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_basket, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_basket, container, false);
+        db = ((MyApp) getActivity().getApplication()).getORMDatabase();
+        setup();
+        return rootView;
     }
+
+    void setup() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("UserData", "");
+        OrmUser userData = gson.fromJson(json, OrmUser.class);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                basketsList = db.BasketDao().GetBasketById(userData.getId());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (basketsList.size() == 0) {
+                            MaterialCardView materialCardView = (MaterialCardView) rootView.findViewById(R.id.BasketPurchaseCardView);
+                            materialCardView.setVisibility(View.INVISIBLE);
+                        }
+                        TextView totalPrice = (TextView) rootView.findViewById(R.id.BasketTotalPriceTextView);
+                        for (OrmBasket item : basketsList) {
+                            total += item.getTotal_price();
+                        }
+                        totalPrice.setText("Total Price " + String.valueOf(total) + " OMR");
+                        RecyclerView basketRecyclerView = (RecyclerView) rootView.findViewById(R.id.BasketRecyclerView);
+                        BasketAdapter basketAdapter = new BasketAdapter(rootView.getContext(), getActivity(), userData.getId(), basketsList, total);
+                        basketRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        basketRecyclerView.setAdapter(basketAdapter);
+                    }
+                });
+            }
+        });
+        thread.start();
+    }
+
+
 }

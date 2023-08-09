@@ -1,11 +1,17 @@
 package com.example.myelectronics.fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -13,15 +19,19 @@ import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myelectronics.MyApp;
 import com.example.myelectronics.R;
 import com.example.myelectronics.RecyclerViews.ProductAdapter;
+import com.example.myelectronics.RecyclerViews.SubProductAdapter;
 import com.example.myelectronics.database.ORMDatabase;
 import com.example.myelectronics.database.OrmProduct;
+import com.example.myelectronics.database.OrmUser;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +47,20 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    List<OrmProduct> initData = new ArrayList<>();
+    List<OrmProduct> products = new ArrayList<>();
+    List<OrmProduct> filteredProducts = new ArrayList<>();
+
+
     List<String> Titles = new ArrayList<>();
     Context context;
     View rootView;
+    EditText searchEditText;
+    RecyclerView productRecyclerView;
     private DrawerLayout drawerLayout;
     private ImageButton btnToggleDrawer;
     private ORMDatabase db;
     private ViewGroup viewGroup;
+    private OrmUser userData;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -88,6 +104,38 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         context = rootView.getContext();
         viewGroup = container;
+        searchEditText = rootView.findViewById(R.id.HomeSearch);
+        productRecyclerView = (RecyclerView) rootView.findViewById(R.id.HomeParentRecyclerView);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("UserData", "");
+        userData = gson.fromJson(json, OrmUser.class);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String newText = editable.toString();
+                filterDataBasedOnText(newText);
+                if (newText.isEmpty()) {
+                    ProductAdapter productAdapter = new ProductAdapter(context, Titles, products, getActivity(), userData.getId());
+                    productRecyclerView.setAdapter(productAdapter);
+                    productRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                } else {
+                    SubProductAdapter subProductAdapter = new SubProductAdapter(context, filteredProducts, getActivity(), userData.getId(), 1);
+                    subProductAdapter.updateData(filteredProducts);
+                    productRecyclerView.setAdapter(subProductAdapter);
+                    productRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                }
+            }
+        });
         // Inflate the layout for this fragment
         setup();
         return rootView;
@@ -98,13 +146,16 @@ public class HomeFragment extends Fragment {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                initData = db.ProductDao().GetAllProducts();
-                initData();
-                RecyclerView productRecyclerView = (RecyclerView) rootView.findViewById(R.id.HomeParentRecyclerView);
-                ProductAdapter productAdapter = new ProductAdapter(context, Titles, initData);
-                productRecyclerView.setAdapter(productAdapter);
-                productRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+                products = db.ProductDao().GetAllProducts();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initData();
+                        ProductAdapter productAdapter = new ProductAdapter(context, Titles, products, getActivity(), userData.getId());
+                        productRecyclerView.setAdapter(productAdapter);
+                        productRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    }
+                });
             }
         });
         thread.start();
@@ -143,16 +194,24 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
     void initData() {
 
-
-        for (OrmProduct product : initData) {
+        for (OrmProduct product : products) {
             if (!Titles.contains(product.getCategory())) {
                 Titles.add(product.getCategory());
             }
         }
     }
 
+    private void filterDataBasedOnText(String newText) {
+        filteredProducts.clear();
+        for (OrmProduct item : products) {
+            if (item.getProductName().toLowerCase().contains(newText.toLowerCase())) {
+                filteredProducts.add(item);
+            }
+        }
+    }
 
 //    @Override
 //    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
