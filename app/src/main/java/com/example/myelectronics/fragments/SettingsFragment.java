@@ -78,6 +78,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setup() {
+        Titles.clear();
         Titles.add("Change Language");
         Titles.add("Change Theme");
         RecyclerView settingsRecyclerView = (RecyclerView) rootView.findViewById(R.id.SettingsRecyclerView);

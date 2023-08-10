@@ -8,16 +8,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,7 +25,6 @@ import com.example.myelectronics.RecyclerViews.SubProductAdapter;
 import com.example.myelectronics.database.ORMDatabase;
 import com.example.myelectronics.database.OrmProduct;
 import com.example.myelectronics.database.OrmUser;
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -56,7 +50,7 @@ public class HomeFragment extends Fragment {
     View rootView;
     EditText searchEditText;
     RecyclerView productRecyclerView;
-    private DrawerLayout drawerLayout;
+
     private ImageButton btnToggleDrawer;
     private ORMDatabase db;
     private ViewGroup viewGroup;
@@ -159,39 +153,6 @@ public class HomeFragment extends Fragment {
             }
         });
         thread.start();
-
-
-        drawerLayout = rootView.findViewById(R.id.drawer_layout);
-        View customDrawerView = LayoutInflater.from(context).inflate(R.layout.custom_drawer_layout, viewGroup, false);
-        NavigationView navView = rootView.findViewById(R.id.navigation_view);
-        navView.addHeaderView(customDrawerView);
-        btnToggleDrawer = rootView.findViewById(R.id.btn_toggle_drawer);
-        navView.getMenu().findItem(R.id.drawer_menu_profile).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
-                Toast.makeText(context, "Profile clicked", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-        navView.getMenu().findItem(R.id.drawer_menu_logout).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
-                Toast.makeText(context, "Logout clicked", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
-        btnToggleDrawer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Check if the drawer is open and toggle it accordingly
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                } else {
-                    drawerLayout.openDrawer(GravityCompat.START);
-                }
-            }
-        });
     }
 
 

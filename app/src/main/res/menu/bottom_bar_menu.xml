@@ -8,10 +8,10 @@
         android:id="@+id/BasketBottomBar"
         android:icon="@drawable/baseline_shopping_basket_24"
         android:title="Basket" />
-    <item
-        android:id="@+id/OrdersBottomBar"
-        android:icon="@drawable/baseline_playlist_add_check_circle_24"
-        android:title="Orders" />
+    <!--    <item-->
+    <!--        android:id="@+id/OrdersBottomBar"-->
+    <!--        android:icon="@drawable/baseline_playlist_add_check_circle_24"-->
+    <!--        android:title="Orders" />-->
     <item
         android:id="@+id/SettingsBottomBar"
         android:icon="@drawable/baseline_settings_24"
